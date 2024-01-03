@@ -1,0 +1,110 @@
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <ui:composition template="/pages/template/layout.xhtml">
+    <ui:define name="title">Certificación de notas</ui:define>
+    <ui:define name="layout">
+      <h:form id="form">
+        <div class="card crud-demo">
+          <p:toolbar>
+            <p:toolbarGroup></p:toolbarGroup>
+            <p:toolbarGroup align="right">
+              <!-- button para exportar el contenido de la tabla que apunta a propiedad target
+					         del dataExporter. En este caso dt-users es el identificador del componente datatable -->
+              <p:commandButton
+                value="Export"
+                icon="pi pi-upload"
+                styleClass="ui-button-help"
+                ajax="false"
+              >
+                <p:dataExporter
+                  type="pdf"
+                  target="dt-certificacion"
+                  fileName="certificacion"
+                />
+              </p:commandButton>
+            </p:toolbarGroup>
+          </p:toolbar>
+          <p:dataTable
+            id="dt-certificacion"
+            widgetVar="dtcertificacion"
+            var="certificaciones"
+            value="#{manageCertificacionBean.lista}"
+            reflow="true"
+            paginator="true"
+            rows="10"
+            paginatorPosition="bottom"
+          >
+            <f:facet name="header">
+              <div class="products-table-header">
+                <span style="font-weight: bold">Estudiante</span>
+                <span class="filter-container ui-input-icon-left">
+                  <i class="pi pi-search"></i>
+                  <p:inputText
+                    id="globalFilter"
+                    onkeyup="PF('dtCertif').filter()"
+                    placeholder="Buscar"
+                  />
+                </span>
+              </div>
+            </f:facet>
+            <!-- Nombres -->
+            <p:column
+              headerText="Nombres"
+              sortBy="#{certificaciones.names}"
+              filterBy="#{certificaciones.names}"
+            >
+              <h:outputText value="#{certificaciones.names}" />
+            </p:column>
+            <!-- Apellidos -->
+            <p:column
+              headerText="Apellidos"
+              sortBy="#{certificaciones.surnames}"
+              filterBy="#{certificaciones.surnames}"
+            >
+              <h:outputText value="#{certificaciones.surnames}" />
+            </p:column> 
+              <!-- Cursos-->
+            <p:column
+              headerText="Cursos"
+              sortBy="#{certificaciones.schollarCourse}"
+              filterBy="#{certificaciones.schollarCourse}"
+            >
+              <h:outputText value="#{certificaciones.schollarCourse}" />
+            </p:column>
+            <!-- Annos -->
+            <p:column
+              headerText="Años"
+              sortBy="#{certificaciones.year}"
+              filterBy="#{certificaciones.year}"
+            >
+              <h:outputText value="#{certificaciones.year}" />
+            </p:column>
+            <!-- Asignaturas -->
+            <p:column
+              headerText="Asignaturas"
+              sortBy="#{certificaciones.subject}"
+              filterBy="#{certificaciones.subject}"
+            >
+              <h:outputText value="#{certificaciones.subject}" />
+            </p:column>
+             <!-- Evaluaciones -->
+            <p:column
+              headerText="Evaluaciones"
+              sortBy="#{certificaciones.evaluation}"
+              filterBy="#{certificaciones.evaluation}"
+            >
+              <h:outputText value="#{certificaciones.evaluation}" />
+            </p:column>
+           
+           
+          </p:dataTable>
+        </div>
+      </h:form>
+    </ui:define>
+  </ui:composition>
+</html>
