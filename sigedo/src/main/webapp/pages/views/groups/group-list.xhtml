@@ -1,0 +1,121 @@
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <ui:composition template="/pages/template/layout.xhtml">
+    <ui:define name="title"> Lista de Grupos </ui:define>
+    <ui:define name="layout">
+      <h:form id="form">
+        <div class="card">
+          <p:toolbar>
+            <p:toolbarGroup>
+              <p:commandButton
+                value="Agregar"
+                icon="pi pi-plus" 
+                style="margin-right: 0.5rem"
+                actionListener="#{manageGroupBean.openNew}"
+                update=":form:manage-group-content"
+                oncomplete="PF('manageGroupDialog').show()"
+              >
+                <p:resetInput target=":form:manage-group-content" />
+              </p:commandButton>
+            </p:toolbarGroup>
+          </p:toolbar>
+          
+          <p:dataTable
+            id="dt-groups" 
+            var="group"
+            widgetVar="dtGroups"
+            value="#{manageGroupBean.groups}"
+            reflow="true"
+            paginator="true" 
+            paginatorPosition="bottom"
+            rows="6"
+           
+          >
+            <f:facet name="header">
+              <div class="products-table-header">
+                <span style="font-weight: bold">Grupos:</span>
+                <span class="filter-container ui-input-icon-left">
+                  <i class="pi pi-search"></i>
+                  <p:inputText
+                    id="globalFilter"
+                    onkeyup="PF('dtGroup').filter()"
+                    placeholder="Buscar"
+                  />
+                </span>
+              </div>
+            </f:facet>
+
+            <p:column
+              headerText="No. de grupo"
+              sortBy="#{group.num_group}"
+              filterBy="#{group.num_group}"
+            >
+              <h:outputText value="#{group.num_group}" />
+            </p:column>
+
+            <p:column
+              headerText="Año"
+              sortBy="#{group.year}"
+              filterBy="#{group.year}"
+            >
+              <h:outputText value="#{group.year}" />
+            </p:column>
+
+            <p:column exportable="false">
+              <p:commandButton
+                icon="pi pi-pencil"
+                action="#{manageGroupBean.openForEdit}"
+                update=":form:manage-group-content"
+                oncomplete="PF('manageGroupDialog').show()"
+                styleClass="edit-button rounded-button ui-button-success"
+                process="@this"
+              >
+                <f:setPropertyActionListener
+                  value="#{group}"
+                  target="#{manageGroupBean.selectedgroup}"
+                />
+                <p:resetInput target=":form:manage-group-content" />
+              </p:commandButton>
+              <p:commandButton
+                class="ui-button-warning rounded-button"
+                icon="pi pi-trash"
+                process="@this"
+                action="#{manageGroupBean.deleteGroup}"
+              >
+                <f:setPropertyActionListener
+                  value="#{group}"
+                  target="#{manageGroupBean.selectedgroup}"
+                />
+                <p:confirm
+                  message="¿Está seguro de eliminar el grupo?"
+                  header="Confirmar"
+                  icon="pi pi-exclamation-triangle"
+                />
+              </p:commandButton>
+            </p:column>
+          </p:dataTable>
+
+          <ui:include src="group-form.xhtml"></ui:include>
+          <p:confirmDialog global="true" showEffect="fade" width="250">
+            <p:commandButton
+              value="Si"
+              type="button"
+              icon="pi pi-check"
+            />
+            <p:commandButton
+              value="No"
+              type="button"
+              icon="pi pi-times"
+              class="ui-button-secondary"
+            />
+          </p:confirmDialog>
+        </div>
+      </h:form>
+    </ui:define>
+  </ui:composition>
+</html>
